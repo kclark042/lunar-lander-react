@@ -17,6 +17,8 @@ export default class App extends Component {
   
   update() {
     this.canvasRef.current.drawStars();
+    this.canvasRef.current.drawSpaceship();
+    this.canvasRef.current.updateSpaceship();
     this.animationID = window.requestAnimationFrame(() => this.update());  
   }
   render() {

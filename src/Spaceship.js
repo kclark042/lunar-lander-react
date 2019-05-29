@@ -66,3 +66,8 @@ export function updateSpaceship(spaceship) {
 
   return spaceship
 }
+
+export function toggleEngine(spaceship){
+  spaceship.engineOn = !spaceship.engineOn
+  return spaceship
+}

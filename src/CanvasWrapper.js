@@ -1,6 +1,6 @@
 import React from "react";
 import { createStars, drawStars } from "./Stars";
-import { drawSpaceship, updateSpaceship } from "./Spaceship";
+import { drawSpaceship, updateSpaceship, toggleEngine } from "./Spaceship";
 
 export default class CanvasWrapper extends React.Component {
   constructor(props) {
@@ -63,7 +63,12 @@ export default class CanvasWrapper extends React.Component {
 	updateSpaceship(){
 		this.setState({spaceship: updateSpaceship(this.state.spaceship)})
 		drawSpaceship(this.state.spaceship, this.el)
-	}
+  }
+  
+  toggleEngine(){
+    this.setState({spaceship: toggleEngine(this.state.spaceship)})
+    drawSpaceship(this.state.spaceship, this.el)
+  }
 
   render() {
     return (

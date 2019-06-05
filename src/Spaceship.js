@@ -29,7 +29,7 @@ export function drawSpaceship(spaceship, canvas) {
   context.restore();
 }
 
-export function updateSpaceship(spaceship) {
+export function updateSpaceship(spaceship, canvas) {
   spaceship.position.x += -1 * spaceship.velocity.x;
   spaceship.position.y += spaceship.velocity.y;
 
@@ -61,13 +61,34 @@ export function updateSpaceship(spaceship) {
   }
 
   spaceship.velocity.y -= spaceship.gravity.y;
-
   spaceship.fuelBurned = 0;
 
-  return spaceship
+  if (spaceship.position.y >= canvas.height - 50) {
+    spaceship.landed = true;
+    if (spaceship.velocity.y > spaceship.MTV) {
+      spaceship.crashed = true;
+    }
+  }
+
+  return spaceship;
 }
 
-export function toggleEngine(spaceship){
-  spaceship.engineOn = !spaceship.engineOn
-  return spaceship
+export function toggleEngine(spaceship) {
+  spaceship.engineOn = !spaceship.engineOn;
+  return spaceship;
+}
+
+export function displayStatus(spaceship, canvas) {
+  const context = canvas.getContext("2d");
+
+  context.rect(canvas.height , 0, canvas.width, 100);
+  context.fillStyle = "grey";
+  context.fill();
+  
+  const velocity = spaceship.velocity.y.toPrecision(4);
+  canvas.font = "bold 24px sans-serif ";
+  context.fillStyle = "black";
+
+  context.fillText(`Fuel Remaining: ${spaceship.fuel}`, canvas.width - 90 , 30);
+  context.fillText(`Velocity: ${velocity}`, canvas.width - 90, 50);
 }

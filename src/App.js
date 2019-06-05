@@ -3,6 +3,8 @@ import logo from "./logo.svg";
 import CanvasWrapper from "./CanvasWrapper";
 import "./App.css";
 
+const SPACE_BAR = 32;
+
 export default class App extends Component {
   constructor(props) {
     super(props);
@@ -20,13 +22,30 @@ export default class App extends Component {
 
   update() {
     this.canvasRef.current.drawStars();
-    this.canvasRef.current.drawSpaceship();
     this.canvasRef.current.updateSpaceship();
-    this.animationID = window.requestAnimationFrame(() => this.update());
+    this.canvasRef.current.drawPlanet()
+    this.canvasRef.current.displayStatus();
+    this.canvasRef.current.drawSpaceship();
+    this.isLanded()
+    
+  }
+
+  isLanded(){
+    if(this.canvasRef.current.isLanded()){
+      window.cancelAnimationFrame(this.animationID)
+      if(this.canvasRef.current.isCrashed()){
+        this.canvasRef.current.displayCrashed()
+      } else {
+        this.canvasRef.current.displaySafe()
+      }
+
+    } else {
+      this.animationID = window.requestAnimationFrame(() => this.update());
+    }
   }
 
   keyPressed(event) {
-    if (event.keyCode === 32) {
+    if (event.keyCode === SPACE_BAR) {
       this.canvasRef.current.toggleEngine()
     }
   }

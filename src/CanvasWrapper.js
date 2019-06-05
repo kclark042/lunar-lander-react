@@ -1,6 +1,11 @@
 import React from "react";
 import { createStars, drawStars } from "./Stars";
-import { drawSpaceship, updateSpaceship, toggleEngine } from "./Spaceship";
+import {
+  drawSpaceship,
+  updateSpaceship,
+  toggleEngine,
+  displayStatus
+} from "./Spaceship";
 
 export default class CanvasWrapper extends React.Component {
   constructor(props) {
@@ -48,26 +53,61 @@ export default class CanvasWrapper extends React.Component {
   }
 
   renderCanvas() {
-		drawStars(this.state.stars, this.el);
-		drawSpaceship(this.state.spaceship, this.el)
+    drawStars(this.state.stars, this.el);
+    drawSpaceship(this.state.spaceship, this.el);
   }
 
-	drawSpaceship(){
-		drawSpaceship(this.state.spaceship, this.el)
-	}
+  drawSpaceship() {
+    drawSpaceship(this.state.spaceship, this.el);
+  }
 
   drawStars() {
     drawStars(this.state.stars, this.el);
-	}
-	
-	updateSpaceship(){
-		this.setState({spaceship: updateSpaceship(this.state.spaceship)})
-		drawSpaceship(this.state.spaceship, this.el)
   }
-  
-  toggleEngine(){
-    this.setState({spaceship: toggleEngine(this.state.spaceship)})
-    drawSpaceship(this.state.spaceship, this.el)
+
+  drawPlanet() {
+    const context = this.el.getContext("2d");
+    context.rect(0, this.el.height - 50, this.el.width, 50);
+    context.fillStyle = "grey";
+    context.fill();
+  }
+
+  updateSpaceship() {
+    this.setState({ spaceship: updateSpaceship(this.state.spaceship, this.el) });
+    drawSpaceship(this.state.spaceship, this.el);
+  }
+
+  toggleEngine() {
+    this.setState({ spaceship: toggleEngine(this.state.spaceship) });
+    drawSpaceship(this.state.spaceship, this.el);
+  }
+
+  displayStatus() {
+    displayStatus(this.state.spaceship, this.el);
+  }
+
+  isLanded() {
+    return this.state.spaceship.landed;
+  }
+
+  isCrashed() {
+    return this.state.spaceship.crashed;
+  }
+
+  displayCrashed() {
+    const context = this.el.getContext("2d");
+
+    context.font = "bold 48px serif";
+    context.fillStyle = "white";
+    context.fillText("You Crashed!", this.el.width/4, this.el.height/2);
+  }
+
+  displaySafe(){
+    const context = this.el.getContext("2d");
+
+    context.font = "bold 48px serif";
+    context.fillStyle = "white";
+    context.fillText("You Landed Safely!", this.el.width - (this.el.width - 50), this.el.height/2);
   }
 
   render() {

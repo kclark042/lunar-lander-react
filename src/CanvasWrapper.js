@@ -7,6 +7,9 @@ import {
   displayStatus
 } from "./Spaceship";
 
+const CANVAS_HEIGHT = 400;
+const CANVAS_WIDTH = 500;
+
 export default class CanvasWrapper extends React.Component {
   constructor(props) {
     super(props);
@@ -17,7 +20,7 @@ export default class CanvasWrapper extends React.Component {
         width: 8,
         height: 22,
         position: {
-          x: 300,
+          x: CANVAS_WIDTH /2,
           y: 20
         },
         velocity: {
@@ -53,37 +56,32 @@ export default class CanvasWrapper extends React.Component {
   }
 
   renderCanvas() {
-    drawStars(this.state.stars, this.el);
-    drawSpaceship(this.state.spaceship, this.el);
-  }
-
-  drawSpaceship() {
-    drawSpaceship(this.state.spaceship, this.el);
-  }
-
-  drawStars() {
-    drawStars(this.state.stars, this.el);
-  }
-
-  drawPlanet() {
     const context = this.el.getContext("2d");
-    context.rect(0, this.el.height - 50, this.el.width, 50);
-    context.fillStyle = "grey";
-    context.fill();
+    context.clearRect(0, 0, this.el.width, this.el.height);
+
+    drawStars(this.state.stars, this.el, context);
+    drawSpaceship(this.state.spaceship, this.el);
+    this.drawPlanet(context);
+    displayStatus(this.state.spaceship, this.el, context);
+  }
+
+  drawPlanet(context) {
+    context.fillStyle = "rgb(117, 176, 188)";
+    context.save();
+    context.fillRect(0, this.el.height - 50, this.el.width, 50);
+    context.restore();
   }
 
   updateSpaceship() {
-    this.setState({ spaceship: updateSpaceship(this.state.spaceship, this.el) });
+    this.setState({
+      spaceship: updateSpaceship(this.state.spaceship, this.el)
+    });
     drawSpaceship(this.state.spaceship, this.el);
   }
 
   toggleEngine() {
     this.setState({ spaceship: toggleEngine(this.state.spaceship) });
     drawSpaceship(this.state.spaceship, this.el);
-  }
-
-  displayStatus() {
-    displayStatus(this.state.spaceship, this.el);
   }
 
   isLanded() {
@@ -94,20 +92,57 @@ export default class CanvasWrapper extends React.Component {
     return this.state.spaceship.crashed;
   }
 
+  resetGame() {
+    this.setState({
+      spaceship: {
+        color: "red",
+        width: 8,
+        height: 22,
+        position: {
+          x: CANVAS_WIDTH /2,
+          y: 20
+        },
+        velocity: {
+          x: 0,
+          y: 0
+        },
+        thrust: {
+          x: 0,
+          y: 0
+        },
+        gravity: {
+          x: 0,
+          y: -0.1622
+        },
+        fuel: 20,
+        fuelBurned: 0,
+        angle: 100.5,
+        engineOn: false,
+        landed: false,
+        MTV: 5.0, //max touch down velocity
+        crashed: false
+      }
+    });
+  }
+
   displayCrashed() {
     const context = this.el.getContext("2d");
 
-    context.font = "bold 48px serif";
+    context.save();
+    context.font = "bold 48px verdana";
     context.fillStyle = "white";
-    context.fillText("You Crashed!", this.el.width/4, this.el.height/2);
+    context.fillText("You Crashed!", 80, this.el.height / 2);
+    context.restore();
   }
 
-  displaySafe(){
+  displaySafe() {
     const context = this.el.getContext("2d");
 
-    context.font = "bold 48px serif";
+    context.save();
+    context.font = "bold 40px verdana";
     context.fillStyle = "white";
-    context.fillText("You Landed Safely!", this.el.width - (this.el.width - 50), this.el.height/2);
+    context.fillText("You Landed Safely!", 46, this.el.height / 2);
+    context.restore();
   }
 
   render() {
@@ -115,8 +150,8 @@ export default class CanvasWrapper extends React.Component {
       <div>
         <canvas
           className="stars"
-          height={400}
-          width={500}
+          height={CANVAS_HEIGHT}
+          width={CANVAS_WIDTH}
           ref={el => {
             this.el = el;
           }}

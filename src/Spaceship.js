@@ -78,17 +78,21 @@ export function toggleEngine(spaceship) {
   return spaceship;
 }
 
-export function displayStatus(spaceship, canvas) {
-  const context = canvas.getContext("2d");
-
-  context.rect(canvas.height , 0, canvas.width, 100);
+export function displayStatus(spaceship, canvas, context) {
   context.fillStyle = "grey";
+  context.save()
+  context.fillRect(STATUS_BOX_WIDTH ,0, canvas.width - STATUS_BOX_WIDTH, 60);
   context.fill();
+  context.restore()
   
   const velocity = spaceship.velocity.y.toPrecision(4);
-  canvas.font = "bold 24px sans-serif ";
   context.fillStyle = "black";
+  context.font = "bold 14px verdana";
 
-  context.fillText(`Fuel Remaining: ${spaceship.fuel}`, canvas.width - 90 , 30);
-  context.fillText(`Velocity: ${velocity}`, canvas.width - 90, 50);
+  context.save()
+  context.fillText(`Fuel Remaining: ${spaceship.fuel}`, STATUS_BOX_WIDTH + 20, 30);
+  context.fillText(`Velocity: ${velocity}`, STATUS_BOX_WIDTH + 20, 50);
+  context.restore()
 }
+
+const STATUS_BOX_WIDTH = 300

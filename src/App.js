@@ -9,44 +9,52 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.canvasRef = React.createRef();
-    this.keyPressed = this.keyPressed.bind(this)
+    this.keyPressed = this.keyPressed.bind(this);
   }
+
   componentDidMount() {
     document.addEventListener("keyup", this.keyPressed);
     document.addEventListener("keydown", this.keyPressed);
     this.animationID = window.requestAnimationFrame(() => this.update());
   }
+
   componentWillUnmount() {
     window.cancelAnimationFrame(this.animationID);
   }
 
   update() {
-    this.canvasRef.current.drawStars();
     this.canvasRef.current.updateSpaceship();
-    this.canvasRef.current.drawPlanet()
-    this.canvasRef.current.displayStatus();
-    this.canvasRef.current.drawSpaceship();
-    this.isLanded()
-    
+    this.isLanded();
   }
 
-  isLanded(){
-    if(this.canvasRef.current.isLanded()){
-      window.cancelAnimationFrame(this.animationID)
-      if(this.canvasRef.current.isCrashed()){
-        this.canvasRef.current.displayCrashed()
+  isLanded() {
+    if (this.canvasRef.current.isLanded()) {
+      window.cancelAnimationFrame(this.animationID);
+      if (this.canvasRef.current.isCrashed()) {
+        this.canvasRef.current.displayCrashed();
       } else {
-        this.canvasRef.current.displaySafe()
+        this.canvasRef.current.displaySafe();
       }
-
     } else {
       this.animationID = window.requestAnimationFrame(() => this.update());
     }
   }
 
+  isCountingDown() {
+    if (this.canvasRef.current.isCountingDown()) {
+    }
+  }
+
   keyPressed(event) {
     if (event.keyCode === SPACE_BAR) {
-      this.canvasRef.current.toggleEngine()
+      if (
+        this.canvasRef.current.isCrashed() ||
+        this.canvasRef.current.isLanded()
+      ) {
+        this.canvasRef.current.resetGame();
+        this.animationID = window.requestAnimationFrame(() => this.update());
+      }
+      this.canvasRef.current.toggleEngine();
     }
   }
 

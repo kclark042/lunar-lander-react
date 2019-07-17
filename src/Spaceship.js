@@ -79,17 +79,17 @@ export function toggleEngine(spaceship) {
 }
 
 export function displayStatus(spaceship, canvas, context) {
-  context.fillStyle = "grey";
   context.save()
+  context.fillStyle = "grey";
   context.fillRect(STATUS_BOX_WIDTH ,0, canvas.width - STATUS_BOX_WIDTH, 60);
   context.fill();
   context.restore()
   
+  
+  context.save()
   const velocity = spaceship.velocity.y.toPrecision(4);
   context.fillStyle = "black";
   context.font = "bold 14px verdana";
-
-  context.save()
   context.fillText(`Fuel Remaining: ${spaceship.fuel}`, STATUS_BOX_WIDTH + 20, 30);
   context.fillText(`Velocity: ${velocity}`, STATUS_BOX_WIDTH + 20, 50);
   context.restore()

@@ -57,17 +57,19 @@ export default class CanvasWrapper extends React.Component {
 
   renderCanvas() {
     const context = this.el.getContext("2d");
+    context.save();
     context.clearRect(0, 0, this.el.width, this.el.height);
 
     drawStars(this.state.stars, this.el, context);
-    drawSpaceship(this.state.spaceship, this.el);
     this.drawPlanet(context);
     displayStatus(this.state.spaceship, this.el, context);
+    drawSpaceship(this.state.spaceship, this.el);
+    context.restore();
   }
 
   drawPlanet(context) {
-    context.fillStyle = "rgb(117, 176, 188)";
     context.save();
+    context.fillStyle = "rgb(117, 176, 188)";
     context.fillRect(0, this.el.height - 50, this.el.width, 50);
     context.restore();
   }
@@ -142,6 +144,22 @@ export default class CanvasWrapper extends React.Component {
     context.font = "bold 40px verdana";
     context.fillStyle = "white";
     context.fillText("You Landed Safely!", 46, this.el.height / 2);
+    context.restore();
+  }
+
+  displayCountDown(countDown){
+    this.renderCanvas()
+    const context = this.el.getContext("2d");
+    
+    context.save();
+    context.font = "bold 40px verdana";
+    context.fillStyle = "white";
+    if(countDown >= 4){
+      context.fillText("Go!", this.el.width/2, this.el.height / 2);
+    } else {
+
+      context.fillText(countDown, this.el.width/2, this.el.height / 2);
+    }
     context.restore();
   }
 

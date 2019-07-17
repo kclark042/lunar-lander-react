@@ -10,6 +10,9 @@ export default class App extends Component {
     super(props);
     this.canvasRef = React.createRef();
     this.keyPressed = this.keyPressed.bind(this);
+    this.countDownStart = 0;
+    this.countDownElapsedTime = 0;
+    this.isCountingDown = false;
   }
 
   componentDidMount() {
@@ -23,8 +26,18 @@ export default class App extends Component {
   }
 
   update() {
-    this.canvasRef.current.updateSpaceship();
-    this.isLanded();
+    if (this.isCountingDown) {
+      const date = new Date()
+      this.countDownElapsedTime = date.getSeconds()
+      const countDown = Math.abs(this.countDownStart - this.countDownElapsedTime)
+    
+      this.isCountDownFinished(countDown)
+      
+      this.canvasRef.current.displayCountDown(countDown);
+    } else {
+      this.canvasRef.current.updateSpaceship();
+      this.isLanded();
+    }
   }
 
   isLanded() {
@@ -40,10 +53,13 @@ export default class App extends Component {
     }
   }
 
-  isCountingDown() {
-    if (this.canvasRef.current.isCountingDown()) {
-    }
+  isCountDownFinished(countDown){
+    if(countDown > 4){
+      this.isCountingDown = false;
+    } 
+    this.animationID = window.requestAnimationFrame(() => this.update());
   }
+
 
   keyPressed(event) {
     if (event.keyCode === SPACE_BAR) {
@@ -51,6 +67,9 @@ export default class App extends Component {
         this.canvasRef.current.isCrashed() ||
         this.canvasRef.current.isLanded()
       ) {
+        const date = new Date();
+        this.isCountingDown = true;
+        this.countDownStart = date.getSeconds();
         this.canvasRef.current.resetGame();
         this.animationID = window.requestAnimationFrame(() => this.update());
       }

@@ -1,3 +1,36 @@
+const CANVAS_WIDTH = 500;
+
+export function defaultSpaceship() {
+  return {
+    color: "red",
+    width: 8,
+    height: 22,
+    position: {
+      x: CANVAS_WIDTH / 2,
+      y: 20
+    },
+    velocity: {
+      x: 0,
+      y: 0
+    },
+    thrust: {
+      x: 0,
+      y: 0
+    },
+    gravity: {
+      x: 0,
+      y: -0.1622
+    },
+    fuel: 20,
+    fuelBurned: 0,
+    angle: 100.5,
+    engineOn: false,
+    landed: false,
+    MTV: 5.0, //max touch down velocity
+    crashed: false
+  };
+}
+
 export function drawSpaceship(spaceship, canvas) {
   const context = canvas.getContext("2d");
   context.save();
@@ -79,20 +112,23 @@ export function toggleEngine(spaceship) {
 }
 
 export function displayStatus(spaceship, canvas, context) {
-  context.save()
+  context.save();
   context.fillStyle = "grey";
-  context.fillRect(STATUS_BOX_WIDTH ,0, canvas.width - STATUS_BOX_WIDTH, 60);
+  context.fillRect(STATUS_BOX_WIDTH, 0, canvas.width - STATUS_BOX_WIDTH, 60);
   context.fill();
-  context.restore()
-  
-  
-  context.save()
+  context.restore();
+
+  context.save();
   const velocity = spaceship.velocity.y.toPrecision(4);
   context.fillStyle = "black";
   context.font = "bold 14px verdana";
-  context.fillText(`Fuel Remaining: ${spaceship.fuel}`, STATUS_BOX_WIDTH + 20, 30);
+  context.fillText(
+    `Fuel Remaining: ${spaceship.fuel}`,
+    STATUS_BOX_WIDTH + 20,
+    30
+  );
   context.fillText(`Velocity: ${velocity}`, STATUS_BOX_WIDTH + 20, 50);
-  context.restore()
+  context.restore();
 }
 
-const STATUS_BOX_WIDTH = 300
+const STATUS_BOX_WIDTH = 300;

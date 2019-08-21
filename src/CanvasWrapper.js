@@ -1,6 +1,7 @@
 import React from "react";
 import { createStars, drawStars } from "./Stars";
 import {
+  defaultSpaceship,
   drawSpaceship,
   updateSpaceship,
   toggleEngine,
@@ -15,34 +16,7 @@ export default class CanvasWrapper extends React.Component {
     super(props);
     this.state = {
       stars: [],
-      spaceship: {
-        color: "red",
-        width: 8,
-        height: 22,
-        position: {
-          x: CANVAS_WIDTH /2,
-          y: 20
-        },
-        velocity: {
-          x: 0,
-          y: 0
-        },
-        thrust: {
-          x: 0,
-          y: 0
-        },
-        gravity: {
-          x: 0,
-          y: -0.1622
-        },
-        fuel: 20,
-        fuelBurned: 0,
-        angle: 100.5,
-        engineOn: false,
-        landed: false,
-        MTV: 5.0, //max touch down velocity
-        crashed: false
-      }
+      spaceship: defaultSpaceship()
     };
   }
 
@@ -95,36 +69,7 @@ export default class CanvasWrapper extends React.Component {
   }
 
   resetGame() {
-    this.setState({
-      spaceship: {
-        color: "red",
-        width: 8,
-        height: 22,
-        position: {
-          x: CANVAS_WIDTH /2,
-          y: 20
-        },
-        velocity: {
-          x: 0,
-          y: 0
-        },
-        thrust: {
-          x: 0,
-          y: 0
-        },
-        gravity: {
-          x: 0,
-          y: -0.1622
-        },
-        fuel: 20,
-        fuelBurned: 0,
-        angle: 100.5,
-        engineOn: false,
-        landed: false,
-        MTV: 5.0, //max touch down velocity
-        crashed: false
-      }
-    });
+    this.setState({spaceship: defaultSpaceship()});
   }
 
   displayCrashed() {

@@ -8,8 +8,8 @@ import {
   displayStatus
 } from "./Spaceship";
 
-const CANVAS_HEIGHT = 400;
-const CANVAS_WIDTH = 500;
+const CANVAS_HEIGHT = 800;
+const CANVAS_WIDTH = 800;
 
 export default class CanvasWrapper extends React.Component {
   constructor(props) {

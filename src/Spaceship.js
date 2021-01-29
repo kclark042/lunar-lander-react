@@ -1,4 +1,4 @@
-const CANVAS_WIDTH = 500;
+const CANVAS_WIDTH = 800;
 
 export function defaultSpaceship() {
   return {
@@ -21,7 +21,7 @@ export function defaultSpaceship() {
       x: 0,
       y: -0.1622
     },
-    fuel: 20,
+    fuel: 30,
     fuelBurned: 0,
     angle: 100.5,
     engineOn: false,
@@ -127,8 +127,10 @@ export function displayStatus(spaceship, canvas, context) {
     STATUS_BOX_WIDTH + 20,
     30
   );
+  context.save()
+  velocity > spaceship.MTV ? context.fillStyle = "red" : context.fillStyle = "green"
   context.fillText(`Velocity: ${velocity}`, STATUS_BOX_WIDTH + 20, 50);
   context.restore();
 }
 
-const STATUS_BOX_WIDTH = 300;
+const STATUS_BOX_WIDTH = CANVAS_WIDTH/2;
